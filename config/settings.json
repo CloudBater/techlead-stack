@@ -1,0 +1,55 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(~/.ssh/**)",
+      "Read(~/.gnupg/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.azure/**)",
+      "Read(~/.kube/**)",
+      "Read(~/.docker/config.json)",
+      "Read(~/.npmrc)",
+      "Read(~/.pypirc)",
+      "Read(~/.git-credentials)",
+      "Read(~/.config/gh/**)",
+      "Edit(~/.bashrc)",
+      "Edit(~/.zshrc)",
+      "Edit(~/.ssh/**)",
+      "Edit(~/.aws/**)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/guard.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/audit-log.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/notify.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
