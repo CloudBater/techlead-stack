@@ -58,9 +58,11 @@ if echo "$COMMAND" | grep -qE 'rm\s+-[a-zA-Z]*r[a-zA-Z]*f?\s+(/|~|\.\.|\./)' || 
   BLOCKED="rm -rf on broad path detected. Verify the target path is correct."
 fi
 
-# DROP TABLE / DROP DATABASE
+# DROP TABLE / DROP DATABASE — skip git commands (commit messages may mention SQL keywords)
 if echo "$COMMAND" | grep -qiE 'DROP\s+(TABLE|DATABASE|SCHEMA)'; then
-  BLOCKED="SQL DROP statement detected. This is irreversible in production."
+  if ! echo "$COMMAND" | grep -qE '^git\s'; then
+    BLOCKED="SQL DROP statement detected. This is irreversible in production."
+  fi
 fi
 
 # kubectl delete without dry-run
