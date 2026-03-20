@@ -60,7 +60,7 @@ fi
 
 # DROP TABLE / DROP DATABASE — skip git commands (commit messages may mention SQL keywords)
 if echo "$COMMAND" | grep -qiE 'DROP\s+(TABLE|DATABASE|SCHEMA)'; then
-  if ! echo "$COMMAND" | grep -qE '^git\s'; then
+  if ! echo "$COMMAND" | grep -qE 'git\s+(commit|tag|log|diff|show)\b'; then
     BLOCKED="SQL DROP statement detected. This is irreversible in production."
   fi
 fi
